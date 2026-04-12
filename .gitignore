@@ -1,0 +1,5 @@
+.env
+docker-compose.yml
+*.log
+logs/
+taggerr_especificaciones.txt
