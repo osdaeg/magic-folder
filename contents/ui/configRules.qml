@@ -5,13 +5,9 @@ import QtQuick.Dialogs
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
 
-// En Plasma 6 las páginas de config deben declarar las propiedades cfg_*
-// que quieran leer/escribir. El sistema las inyecta automáticamente.
 Kirigami.ScrollablePage {
     id: configRulesPage
 
-    // Propiedades cfg_* requeridas por Plasma 6
-    // Plasma inyecta tanto cfg_X como cfg_XDefault — hay que declarar ambas
     property string cfg_rules:                    ""
     property string cfg_rulesDefault:             ""
     property bool   cfg_showNotifications:        true
@@ -21,7 +17,6 @@ Kirigami.ScrollablePage {
     property int    cfg_conflictStrategy:         1
     property int    cfg_conflictStrategyDefault:  1
 
-    // Modelo interno de reglas
     ListModel { id: rulesModel }
 
     function loadFromConfig() {
@@ -43,26 +38,23 @@ Kirigami.ScrollablePage {
 
     actions: [
         Kirigami.Action {
-            text: i18n("Agregar regla")
+            text: i18n("Add rule")
             icon.name: "list-add"
             onTriggered: ruleDialog.openNew()
         }
     ]
 
-    // ── Lista de reglas ───────────────────────────────────────────────────────
-    // Usamos ListView (requerido por SwipeListItem) dentro del ScrollablePage
     ListView {
         id: rulesList
         implicitHeight: contentHeight
         model: rulesModel
         spacing: 2
 
-        // Mensaje cuando no hay reglas
         Kirigami.PlaceholderMessage {
             anchors.centerIn: parent
             visible: rulesModel.count === 0
-            text: i18n("No hay reglas definidas")
-            explanation: i18n("Hacé clic en \"Agregar regla\" para comenzar")
+            text: i18n("No rules defined")
+            explanation: i18n("Click \"Add rule\" to get started")
             icon.name: "folder-symbolic"
         }
 
@@ -73,7 +65,6 @@ Kirigami.ScrollablePage {
             contentItem: RowLayout {
                 spacing: Kirigami.Units.smallSpacing
 
-                // Switch de activación
                 QQC2.Switch {
                     id: ruleSwitch
                     checked: model.enabled
@@ -85,12 +76,11 @@ Kirigami.ScrollablePage {
                     QQC2.ToolTip {
                         visible: ruleSwitch.hovered
                         text: model.destination === ""
-                            ? i18n("Configurá una carpeta destino primero")
-                            : (ruleSwitch.checked ? i18n("Desactivar") : i18n("Activar"))
+                            ? i18n("Set a destination folder first")
+                            : (ruleSwitch.checked ? i18n("Disable rule") : i18n("Enable rule"))
                     }
                 }
 
-                // Ícono de categoría
                 Kirigami.Icon {
                     source: model.icon || "folder-symbolic"
                     width:  Kirigami.Units.iconSizes.smallMedium
@@ -98,7 +88,6 @@ Kirigami.ScrollablePage {
                     opacity: model.enabled ? 1.0 : 0.5
                 }
 
-                // Nombre + destino + extensiones
                 ColumnLayout {
                     Layout.fillWidth: true
                     spacing: 0
@@ -108,11 +97,10 @@ Kirigami.ScrollablePage {
                         font.bold: model.enabled
                         Layout.fillWidth: true
                     }
-
                     QQC2.Label {
                         text: model.destination !== ""
                             ? model.destination
-                            : i18n("⚠ Sin carpeta destino — hacé clic en editar")
+                            : i18n("⚠ No destination folder — click edit")
                         color: model.destination !== ""
                             ? Kirigami.Theme.textColor
                             : Kirigami.Theme.neutralTextColor
@@ -121,7 +109,6 @@ Kirigami.ScrollablePage {
                         Layout.fillWidth: true
                         font.pointSize: Kirigami.Theme.smallFont.pointSize
                     }
-
                     QQC2.Label {
                         text: model.pattern
                         opacity: 0.4
@@ -135,37 +122,36 @@ Kirigami.ScrollablePage {
             actions: [
                 Kirigami.Action {
                     icon.name: "edit-entry"
-                    text: i18n("Editar")
+                    text: i18n("Edit")
                     onTriggered: ruleDialog.openEdit(index)
                 },
                 Kirigami.Action {
                     icon.name: "arrow-up"
-                    text: i18n("Subir")
+                    text: i18n("Move up")
                     enabled: index > 0
                     onTriggered: { rulesModel.move(index, index - 1, 1); saveToConfig() }
                 },
                 Kirigami.Action {
                     icon.name: "arrow-down"
-                    text: i18n("Bajar")
+                    text: i18n("Move down")
                     enabled: index < rulesModel.count - 1
                     onTriggered: { rulesModel.move(index, index + 1, 1); saveToConfig() }
                 },
                 Kirigami.Action {
                     icon.name: "edit-delete"
-                    text: i18n("Eliminar")
+                    text: i18n("Delete")
                     onTriggered: { rulesModel.remove(index); saveToConfig() }
                 }
             ]
         }
     }
 
-    // ── Diálogo agregar/editar ────────────────────────────────────────────────
+    // ── Add / Edit dialog ─────────────────────────────────────────────────────
     Kirigami.Dialog {
         id: ruleDialog
-
         property int editIndex: -1
 
-        title: editIndex === -1 ? i18n("Agregar regla") : i18n("Editar regla")
+        title: editIndex === -1 ? i18n("Add rule") : i18n("Edit rule")
         preferredWidth: Kirigami.Units.gridUnit * 30
         standardButtons: Kirigami.Dialog.Ok | Kirigami.Dialog.Cancel
 
@@ -179,11 +165,8 @@ Kirigami.ScrollablePage {
                 enabled:     destinationField.text !== "",
                 icon:        iconField.text || "folder-symbolic"
             }
-            if (editIndex === -1) {
-                rulesModel.append(rule)
-            } else {
-                rulesModel.set(editIndex, rule)
-            }
+            if (editIndex === -1) rulesModel.append(rule)
+            else rulesModel.set(editIndex, rule)
             saveToConfig()
         }
 
@@ -214,45 +197,40 @@ Kirigami.ScrollablePage {
 
                 QQC2.TextField {
                     id: nameField
-                    Kirigami.FormData.label: i18n("Nombre:")
-                    placeholderText: i18n("Ej: Vídeos")
+                    Kirigami.FormData.label: i18n("Name:")
+                    placeholderText: i18n("E.g.: Videos")
                     Layout.fillWidth: true
                 }
-
                 QQC2.TextField {
                     id: patternField
-                    Kirigami.FormData.label: i18n("Extensiones:")
+                    Kirigami.FormData.label: i18n("Extensions:")
                     placeholderText: i18n("mp4, mkv, avi")
                     Layout.fillWidth: true
                 }
-
                 RowLayout {
-                    Kirigami.FormData.label: i18n("Carpeta destino:")
+                    Kirigami.FormData.label: i18n("Destination folder:")
                     Layout.fillWidth: true
-
                     QQC2.TextField {
                         id: destinationField
-                        placeholderText: i18n("/home/usuario/Vídeos")
+                        placeholderText: i18n("/home/user/Videos")
                         Layout.fillWidth: true
                     }
-
                     QQC2.Button {
                         icon.name: "folder-open"
-                        text: i18n("Explorar…")
+                        text: i18n("Browse…")
                         onClicked: folderDialog.open()
                     }
                 }
-
                 QQC2.TextField {
                     id: iconField
-                    Kirigami.FormData.label: i18n("Ícono (opcional):")
+                    Kirigami.FormData.label: i18n("Icon (optional):")
                     placeholderText: i18n("video-x-generic")
                     Layout.fillWidth: true
                 }
             }
 
             QQC2.Label {
-                text: i18n("Íconos sugeridos: video-x-generic · audio-x-generic · image-x-generic · x-office-document · application-zip · text-x-script · application-x-executable · application-epub+zip")
+                text: i18n("Suggested icons: video-x-generic · audio-x-generic · image-x-generic · x-office-document · application-zip · text-x-script · application-x-executable · application-epub+zip")
                 wrapMode: Text.WordWrap
                 opacity: 0.6
                 Layout.fillWidth: true

@@ -10,20 +10,20 @@ PlasmoidItem {
 
     preferredRepresentation: compactRepresentation
 
-    // ── Reglas predefinidas ───────────────────────────────────────────────────
+    // ── Predefined rules (seeded on first run) ────────────────────────────────
     readonly property var defaultRules: [
-        { name: "Vídeo",                matchType: "extension", pattern: "mp4, avi, mkv, mov, wmv, flv, webm, m4v, 3gp, ts",                                                                                                                                             destination: "", enabled: false, icon: "video-x-generic" },
+        { name: "Video",                matchType: "extension", pattern: "mp4, avi, mkv, mov, wmv, flv, webm, m4v, 3gp, ts",                                                                                                                                             destination: "", enabled: false, icon: "video-x-generic" },
         { name: "Audio",                matchType: "extension", pattern: "mp3, flac, wav, aac, ogg, m4a, wma, opus, aiff",                                                                                                                                                destination: "", enabled: false, icon: "audio-x-generic" },
-        { name: "Imágenes",             matchType: "extension", pattern: "jpg, jpeg, png, gif, webp, bmp, tiff, heic, svg, raw",                                                                                                                                          destination: "", enabled: false, icon: "image-x-generic" },
-        { name: "Documentos",           matchType: "extension", pattern: "pdf, doc, docx, xls, xlsx, ppt, pptx, txt, odt, ods, odp, rtf, csv",                                                                                                                           destination: "", enabled: false, icon: "x-office-document" },
+        { name: "Images",               matchType: "extension", pattern: "jpg, jpeg, png, gif, webp, bmp, tiff, heic, svg, raw",                                                                                                                                          destination: "", enabled: false, icon: "image-x-generic" },
+        { name: "Documents",            matchType: "extension", pattern: "pdf, doc, docx, xls, xlsx, ppt, pptx, txt, odt, ods, odp, rtf, csv",                                                                                                                           destination: "", enabled: false, icon: "x-office-document" },
         { name: "Ebooks",               matchType: "extension", pattern: "epub, mobi, azw, azw3, fb2, djvu",                                                                                                                                                              destination: "", enabled: false, icon: "application-epub+zip" },
-        { name: "Archivos comprimidos", matchType: "extension", pattern: "zip, rar, 7z, tar, gz, bz2, xz",                                                                                                                                                               destination: "", enabled: false, icon: "application-zip" },
+        { name: "Archives",             matchType: "extension", pattern: "zip, rar, 7z, tar, gz, bz2, xz",                                                                                                                                                               destination: "", enabled: false, icon: "application-zip" },
         { name: "APKs",                 matchType: "extension", pattern: "apk, xapk, apks",                                                                                                                                                                              destination: "", enabled: false, icon: "application-vnd.android.package-archive" },
-        { name: "Código fuente",        matchType: "extension", pattern: "py, sh, bash, c, cpp, h, hpp, kt, kts, java, js, ts, html, css, xml, json, yaml, yml, toml, ini, cfg, conf, sql, rb, php, swift, go, rs, lua, r, m, cs, vb, dart, gradle",                   destination: "", enabled: false, icon: "text-x-script" },
-        { name: "Binarios",             matchType: "extension", pattern: "exe, msi, dmg, pkg, deb, rpm, appimage, run, bin, out, elf, so, dll, jar, war",                                                                                                                destination: "", enabled: false, icon: "application-x-executable" }
+        { name: "Source code",          matchType: "extension", pattern: "py, sh, bash, c, cpp, h, hpp, kt, kts, java, js, ts, html, css, xml, json, yaml, yml, toml, ini, cfg, conf, sql, rb, php, swift, go, rs, lua, r, m, cs, vb, dart, gradle",                   destination: "", enabled: false, icon: "text-x-script" },
+        { name: "Binaries",             matchType: "extension", pattern: "exe, msi, dmg, pkg, deb, rpm, appimage, run, bin, out, elf, so, dll, jar, war",                                                                                                                destination: "", enabled: false, icon: "application-x-executable" }
     ]
 
-    // ── Compact (ícono del panel) ─────────────────────────────────────────────
+    // ── Compact (panel icon) ──────────────────────────────────────────────────
     compactRepresentation: Item {
         implicitWidth:  Kirigami.Units.iconSizes.medium
         implicitHeight: Kirigami.Units.iconSizes.medium
@@ -33,7 +33,6 @@ PlasmoidItem {
             anchors.fill: parent
             keys: ["text/uri-list"]
 
-            // Sin parámetro — evita "Too many arguments"
             onEntered: { dropHighlight.visible = true }
             onExited:  { dropHighlight.visible = false }
             onDropped: (drop) => {
@@ -70,7 +69,7 @@ PlasmoidItem {
         PlasmaComponents.Menu {
             id: contextMenu
             PlasmaComponents.MenuItem {
-                text: i18n("Configurar Magic Folder…")
+                text: i18n("Configure Magic Folder…")
                 icon.name: "configure"
                 onClicked: plasmoid.internalAction("configure").trigger()
             }
@@ -94,7 +93,7 @@ PlasmoidItem {
             }
 
             PlasmaComponents.Label {
-                text: i18n("Soltá archivos sobre el ícono del panel para moverlos automáticamente.")
+                text: i18n("Drop files onto the panel icon to move them automatically.")
                 wrapMode: Text.WordWrap
                 Layout.fillWidth: true
             }
@@ -104,7 +103,7 @@ PlasmoidItem {
                     var active = 0
                     for (var i = 0; i < rulesModel.count; i++)
                         if (rulesModel.get(i).enabled) active++
-                    return i18n("Reglas activas: %1 de %2", active, rulesModel.count)
+                    return i18n("Active rules: %1 of %2", active, rulesModel.count)
                 }
                 opacity: 0.7
             }
@@ -112,7 +111,7 @@ PlasmoidItem {
             Item { Layout.fillHeight: true }
 
             PlasmaComponents.Button {
-                text: i18n("Configurar reglas…")
+                text: i18n("Configure rules…")
                 icon.name: "configure"
                 Layout.alignment: Qt.AlignRight
                 onClicked: plasmoid.internalAction("configure").trigger()
@@ -120,7 +119,7 @@ PlasmoidItem {
         }
     }
 
-    // ── Modelo de reglas ──────────────────────────────────────────────────────
+    // ── Rules model ───────────────────────────────────────────────────────────
     ListModel { id: rulesModel }
 
     function initRules() {
@@ -139,11 +138,11 @@ PlasmoidItem {
             var arr = JSON.parse(raw)
             for (var i = 0; i < arr.length; i++) rulesModel.append(arr[i])
         } catch(e) {
-            console.warn("MagicFolder: error al parsear reglas:", e)
+            console.warn("MagicFolder: error parsing rules:", e)
         }
     }
 
-    // ── Procesar archivos soltados ────────────────────────────────────────────
+    // ── Process dropped files ─────────────────────────────────────────────────
     function processDroppedFiles(urls) {
         loadRules()
         var messages = []
@@ -161,7 +160,7 @@ PlasmoidItem {
                 messages.push("✓ " + filename + " → " + dest.split("/").pop())
             } else {
                 hasErrors = true
-                messages.push("? " + filename + " (sin regla)")
+                messages.push("? " + filename + " (no rule)")
             }
         }
 
@@ -181,10 +180,9 @@ PlasmoidItem {
         return null
     }
 
-    // ── Notificación via notify-send ──────────────────────────────────────────
+    // ── Notification via notify-send ──────────────────────────────────────────
     function showNotification(message, hasErrors) {
         var icon = hasErrors ? "dialog-warning" : "folder-symbolic"
-        // Escapamos el mensaje para passarlo como argumento
         var safeMsg = message.replace(/\\/g, "\\\\").replace(/"/g, '\\"')
         notifSource.connectSource(
             "notify-send --icon=" + icon + " --app-name=MagicFolder --expire-time=4000 \"Magic Folder\" \"" + safeMsg + "\""
@@ -198,7 +196,7 @@ PlasmoidItem {
         onNewData: (sourceName) => { disconnectSource(sourceName) }
     }
 
-    // ── Ejecutor de mv ────────────────────────────────────────────────────────
+    // ── Shell executor ────────────────────────────────────────────────────────
     Plasma5Support.DataSource {
         id: executable
         engine: "executable"
@@ -217,7 +215,6 @@ PlasmoidItem {
             } else if (strategy === 2) {
                 cmd = "mv -f -- " + esc(src) + " " + esc(dest + "/" + filename)
             } else {
-                // Mantener ambos: renombrar _1, _2, …
                 cmd = [
                     "(src=" + esc(src),
                     "dest=" + esc(dest),
@@ -228,19 +225,17 @@ PlasmoidItem {
                     "mv -- \"$src\" \"$target\")"
                 ].join("; ")
             }
-
             connectSource(cmd)
         }
 
         onNewData: (sourceName, data) => {
             if (data["exit code"] !== 0)
-                console.warn("MagicFolder: error en mv:", data["stderr"])
+                console.warn("MagicFolder: mv error:", data["stderr"])
             disconnectSource(sourceName)
         }
     }
 
     Component.onCompleted: initRules()
-
     Connections {
         target: plasmoid.configuration
         function onRulesChanged() { loadRules() }

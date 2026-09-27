@@ -1,0 +1,125 @@
+# Italian translation — Magic Folder
+# SPDX-License-Identifier: GPL-2.0-or-later
+msgid ""
+msgstr ""
+"Project-Id-Version: Magic Folder 1.1\n"
+"Language: it\n"
+"Language-Team: Italian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Rules"
+msgstr "Regole"
+
+msgid "General"
+msgstr "Generale"
+
+msgid "Configure Magic Folder…"
+msgstr "Configura Magic Folder…"
+
+msgid "Drop files onto the panel icon to move them automatically."
+msgstr "Trascina i file sull'icona del pannello per spostarli automaticamente."
+
+msgid "Active rules: %1 of %2"
+msgstr "Regole attive: %1 di %2"
+
+msgid "Configure rules…"
+msgstr "Configura regole…"
+
+msgid "Add rule"
+msgstr "Aggiungi regola"
+
+msgid "No rules defined"
+msgstr "Nessuna regola definita"
+
+msgid "Click \"Add rule\" to get started"
+msgstr "Fai clic su «Aggiungi regola» per iniziare."
+
+msgid "Set a destination folder first"
+msgstr "Imposta prima una cartella di destinazione."
+
+msgid "Disable rule"
+msgstr "Disattiva regola"
+
+msgid "Enable rule"
+msgstr "Attiva regola"
+
+msgid "⚠ No destination folder — click edit"
+msgstr "⚠ Nessuna cartella di destinazione — fai clic su Modifica"
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Move up"
+msgstr "Sposta su"
+
+msgid "Move down"
+msgstr "Sposta giù"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Edit rule"
+msgstr "Modifica regola"
+
+msgid "Name:"
+msgstr "Nome:"
+
+msgid "E.g.: Videos"
+msgstr "Es.: Video"
+
+msgid "Extensions:"
+msgstr "Estensioni:"
+
+msgid "mp4, mkv, avi"
+msgstr "mp4, mkv, avi"
+
+msgid "Destination folder:"
+msgstr "Cartella di destinazione:"
+
+msgid "/home/user/Videos"
+msgstr "/home/utente/Video"
+
+msgid "Browse…"
+msgstr "Sfoglia…"
+
+msgid "Icon (optional):"
+msgstr "Icona (opzionale):"
+
+msgid "video-x-generic"
+msgstr "video-x-generic"
+
+msgid "Suggested icons: video-x-generic · audio-x-generic · image-x-generic · x-office-document · application-zip · text-x-script · application-x-executable · application-epub+zip"
+msgstr "Icone suggerite: video-x-generic · audio-x-generic · image-x-generic · x-office-document · application-zip · text-x-script · application-x-executable · application-epub+zip"
+
+msgid "Notifications:"
+msgstr "Notifiche:"
+
+msgid "Show notification after each operation"
+msgstr "Mostra notifica dopo ogni operazione"
+
+msgid "If the file already exists:"
+msgstr "Se il file esiste già:"
+
+msgid "Skip (don't move)"
+msgstr "Salta (non spostare)"
+
+msgid "Keep both (rename: file_1.ext)"
+msgstr "Mantieni entrambi (rinomina: file_1.ext)"
+
+msgid "Overwrite"
+msgstr "Sovrascrivi"
+
+msgid "⚠  Files are moved permanently. Verify your rules and destination folders before using them with important files."
+msgstr "⚠  I file vengono spostati definitivamente. Verifica le tue regole e cartelle di destinazione prima di usarle con file importanti."
+
+msgid "Restore default rules"
+msgstr "Ripristina regole predefinite"
+
+msgid "Restore default rules?"
+msgstr "Ripristinare le regole predefinite?"
+
+msgid "This will delete all custom rules and restore the 9 default categories (disabled, no destination set). Continue?"
+msgstr "Questo eliminerà tutte le regole personalizzate e ripristinerà le 9 categorie predefinite (disattivate, senza destinazione). Continuare?"

@@ -14,7 +14,7 @@
       <default>true</default>
     </entry>
     <entry name="conflictStrategy" type="Int">
-      <default>1</default><!-- 0=omitir, 1=mantener ambos (renombrar), 2=sobreescribir -->
+      <default>1</default><!-- 0=skip, 1=keep both (rename), 2=overwrite -->
     </entry>
   </group>
 </kcfg>
